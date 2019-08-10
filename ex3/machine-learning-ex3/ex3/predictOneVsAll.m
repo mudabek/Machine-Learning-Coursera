@@ -31,8 +31,10 @@ X = [ones(m, 1) X];
 %       
 
 for num = 1:m
-  p(num,[1]) = max(X(m,:)*all_theta');    
+  [maxim, indexOfMax] = max(X(num,:)*all_theta');
+  p(num,:) = indexOfMax;
 endfor
+
 
 % =========================================================================
 
