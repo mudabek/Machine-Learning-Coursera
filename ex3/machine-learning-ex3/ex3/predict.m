@@ -24,9 +24,7 @@ p = zeros(size(X, 1), 1);
 X = [ones(m, 1) X];
 
 p_1 = sigmoid(X * Theta1');
-
 p_1 = [ones(m, 1) p_1];
-
 p_2 = sigmoid(p_1 * Theta2');
 
 for num = 1:m
