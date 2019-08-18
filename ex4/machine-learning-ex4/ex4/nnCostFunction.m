@@ -63,23 +63,56 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+%vectorization of y
+for y_index = 1:m
+  value = y(y_index,:);
+  y_vectors(y_index, value) = 1;
+endfor
 
+%h(x) calculation
+X = [ones(m, 1) X];
+Hx_intermediate = sigmoid(X * Theta1');
+Hx_intermediate = [ones(m,1) Hx_intermediate];
+Hx = sigmoid(Hx_intermediate*Theta2');
 
+%cost calculation
+for i = 1:m
+  for k = 1:num_labels
+    J += (1/m) * ((-y_vectors(i,k) * log(Hx(i,k))) - (1-y_vectors(i,k))*log(1-(Hx(i,k))));  
+  endfor 
+endfor
 
+%cost regularization
+theta1_kernel = 0;
+for j = 1:400
+   for k = hidden_layer_size
+     theta1_kernel += Theta1(k,j)^2;
+   endfor
+endfor
 
-%J = (1/m) * sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1-sigmoid(X*theta)));
+theta2_kernel = 0;
+for j1 = 1:num_labels
+   for k1 = 1:hidden_layer_size
+     theta2_kernel += Theta2(j1,k1)^2;
+   endfor
+endfor
 
+reg_cost = (lambda/2/m) * (theta1_kernel + theta2_kernel);
 
+J += reg_cost;
 
+%backpropagation calculations
+delta_3 = Hx - y;
+delta_2 = Theta2'*delta_3 .* sigmoidGradient(Hx_intermediate);
+delta_2 = delta_2(2:end);
 
+deltas_2 = 0;
+deltas_1 = 0;
 
-
-
-
-
-
-
-
+for g = 1:size(delta_2)
+  deltas_2 += delta_3 * Hx_intermediate';
+  deltas_1 += delta_2 * X';
+endfor
 % -------------------------------------------------------------
 
 % =========================================================================
