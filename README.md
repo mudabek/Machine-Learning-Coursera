@@ -1,2 +1,2 @@
 # ML_coursera
-Machine Learning from Coursera
+Machine Learning course exercises from Coursera
